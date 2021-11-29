@@ -101,15 +101,6 @@ class Car():
         if self.y + self.height > WINDOWHEIGHT :
             self.y = WINDOWHEIGHT - self.height
 
-class Score():
-    def __init__(self):
-        self.score = 0
-    def draw(self):
-        font = pygame.font.SysFont('consolas', 30)
-        scoreSuface = font.render('Score: '+str(int(self.score)), True, (0, 0, 0))
-        DISPLAYSURF.blit(scoreSuface, (10, 10))
-    def update(self):
-        self.score += 0.02
 
 def rectCollision(rect1, rect2):
     if rect1[0] <= rect2[0]+rect2[2] and rect2[0] <= rect1[0]+rect1[2] and rect1[1] <= rect2[1]+rect2[3] and rect2[1] <= rect1[1]+rect1[3]:
@@ -149,11 +140,10 @@ def gameStart(bg):
         pygame.display.update()
         fpsClock.tick(FPS)
 
-def gamePlay(bg, car, obstacles, score):
+def gamePlay(bg, car, obstacles):
     car.__init__()
     obstacles.__init__()
     bg.__init__()
-    score.__init__()
     moveLeft = False
     moveRight = False
     moveUp = False
@@ -189,12 +179,10 @@ def gamePlay(bg, car, obstacles, score):
         car.update(moveLeft, moveRight, moveUp, moveDown)
         obstacles.draw()
         obstacles.update()
-        score.draw()
-        score.update()
         pygame.display.update()
         fpsClock.tick(FPS)
 
-def gameOver(bg, car, obstacles, score):
+def gameOver(bg, car, obstacles):
     font = pygame.font.SysFont('consolas', 60)
     headingSuface = font.render('GAMEOVER', True, (255, 0, 0))
     headingSize = headingSuface.get_size()
@@ -213,7 +201,6 @@ def gameOver(bg, car, obstacles, score):
         bg.draw()
         car.draw()
         obstacles.draw()
-        score.draw()
         DISPLAYSURF.blit(headingSuface, (int((WINDOWWIDTH - headingSize[0])/2), 100))
         DISPLAYSURF.blit(commentSuface, (int((WINDOWWIDTH - commentSize[0])/2), 400))
         pygame.display.update()
@@ -223,11 +210,10 @@ def main():
     bg = Background()
     car = Car()
     obstacles = Obstacles()
-    score = Score()
     gameStart(bg)
     while True:
-        gamePlay(bg, car, obstacles, score)
-        gameOver(bg, car, obstacles, score)
+        gamePlay(bg, car, obstacles)
+        gameOver(bg, car, obstacles)
 
 if __name__ == '__main__':
     main()
